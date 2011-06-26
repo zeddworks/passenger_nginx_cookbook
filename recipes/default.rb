@@ -45,6 +45,17 @@ cookbook_file "/etc/init.d/nginx" do
   action :create_if_missing
 end
 
+user "nginx" do
+  home "/opt/nginx"
+  comment "nginx"
+  system true
+  shell "/bin/false"
+end
+
+group "nginx" do
+  members ['nginx']
+end
+
 service "nginx" do
   supports :restart => true, :reload => true, :status => true
   action [ :enable, :start ]
