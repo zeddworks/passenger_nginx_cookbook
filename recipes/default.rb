@@ -22,30 +22,28 @@ nginx_version="1.0.4"
 remote_file "/tmp/nginx-#{nginx_version}.tar.gz" do
   source "http://nginx.org/download/nginx-#{nginx_version}.tar.gz"
   action :create_if_missing
-  notifies :run, "execute[extract nginx]"
+  not_if "test -f /usr/sbin/nginx"
 end
 
-execute "extract nginx" do
+execute "extract-nginx" do
   command "tar zxvf nginx-#{nginx_version}.tar.gz"
   cwd "/tmp"
-  action :nothing
+  not_if "test -f /usr/sbin/nginx"
 end
 
 gem_package "passenger"
 
 execute "compile-nginx" do
   command "passenger-install-nginx-module --auto --prefix=/usr --nginx-source-dir=/tmp/nginx-#{nginx_version} --extra-configure-flags='--pid-path=/var/run/nginx.pid'"
-  not_if {File.exists?("/usr/sbin/nginx")}
+  not_if "test -f /usr/sbin/nginx"
 end
 
 cookbook_file "/etc/init.d/nginx" do
   source "nginx-common.init.d"
   mode "0755"
   action :create_if_missing
-  notifies :run, "execute[update nginx rc scripts]"
 end
 
-execute "update nginx rc scripts" do
+execute "update-nginx-rc-scripts" do
   command "update-rc.d nginx defaults"
-  action :nothing
 end
