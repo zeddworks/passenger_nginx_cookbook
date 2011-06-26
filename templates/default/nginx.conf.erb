@@ -24,6 +24,9 @@ http {
 
     #access_log  logs/access.log  main;
 
+    passenger_root /usr/local/rvm/gems/<%=@ruby_string%>/gems/passenger-<%=@passenger_version%>;
+    passenger_ruby /usr/local/rvm/wrappers/<%=@ruby_string%>/ruby;
+
     sendfile        on;
     #tcp_nopush     on;
 
@@ -34,7 +37,9 @@ http {
 
     server {
         listen       80;
-        server_name  localhost;
+        server_name  <%=@server_name%>;
+        root <%=@path_to_public%>;
+        passenger_enabled on;
 
         #charset koi8-r;
 
