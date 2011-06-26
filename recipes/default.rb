@@ -34,7 +34,7 @@ end
 gem_package "passenger"
 
 execute "compile-nginx" do
-  command "passenger-install-nginx-module --auto --prefix=/usr --nginx-source-dir=/tmp/nginx-#{nginx_version} --extra-configure-flags='--pid-path=/var/run/nginx.pid'"
+  command "passenger-install-nginx-module --auto --prefix=/usr --nginx-source-dir=/tmp/nginx-#{nginx_version} --extra-configure-flags='--conf-path=/etc/nginx/nginx.conf --error-log-path=/var/log/nginx/error.log --http-log-path=/var/log/nginx/access.log --pid-path=/var/run/nginx.pid --lock-path=/var/run/nginx.lock'"
   not_if "test -f /usr/sbin/nginx"
 end
 
@@ -44,6 +44,7 @@ cookbook_file "/etc/init.d/nginx" do
   action :create_if_missing
 end
 
-execute "update-nginx-rc-scripts" do
-  command "update-rc.d nginx defaults"
+service "nginx" do
+  supports :restart => true, :reload => true, :status => true
+  action [ :enable, :start ]
 end
