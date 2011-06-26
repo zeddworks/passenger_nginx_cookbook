@@ -22,20 +22,21 @@ nginx_version="1.0.4"
 remote_file "/tmp/nginx-#{nginx_version}.tar.gz" do
   source "http://nginx.org/download/nginx-#{nginx_version}.tar.gz"
   action :create_if_missing
-  not_if "test -f /usr/sbin/nginx"
+  not_if "test -f /opt/nginx/sbin/nginx"
 end
 
 execute "extract-nginx" do
   command "tar zxvf nginx-#{nginx_version}.tar.gz"
   cwd "/tmp"
-  not_if "test -f /usr/sbin/nginx"
+  not_if "test -d /tmp/nginx-#{nginx_version}"
+  only_if "test -f /tmp/nginx-#{nginx_version}.tar.gz"
 end
 
 gem_package "passenger"
 
 execute "compile-nginx" do
-  command "passenger-install-nginx-module --auto --prefix=/usr --nginx-source-dir=/tmp/nginx-#{nginx_version} --extra-configure-flags='--conf-path=/etc/nginx/nginx.conf --error-log-path=/var/log/nginx/error.log --http-log-path=/var/log/nginx/access.log --pid-path=/var/run/nginx.pid --lock-path=/var/run/nginx.lock'"
-  not_if "test -f /usr/sbin/nginx"
+  command "passenger-install-nginx-module --auto --prefix=/opt/nginx --nginx-source-dir=/tmp/nginx-#{nginx_version} --extra-configure-flags='--conf-path=/etc/nginx/nginx.conf --error-log-path=/var/log/nginx/error.log --http-log-path=/var/log/nginx/access.log --pid-path=/var/run/nginx.pid --lock-path=/var/run/nginx.lock'"
+  not_if "test -f /opt/nginx/sbin/nginx"
 end
 
 cookbook_file "/etc/init.d/nginx" do
