@@ -36,11 +36,22 @@ http {
 
     #gzip  on;
 
+    <% @servers.each do |server_name| %>
     server {
         listen       80;
-        server_name  <%=@server_name%>;
-        root <%=@path_to_public%>;
+        server_name  <%=server_name%>;
+        root /srv/rails/<%=server_name%>;
         passenger_enabled on;
+        error_page   500 502 503 504  /50x.html;
+        location = /50x.html {
+            root   html;
+        }
+    }
+    <% end %>
+
+    #server {
+    #    listen       80;
+    #    server_name  localhost;
 
         #charset koi8-r;
 
@@ -55,10 +66,10 @@ http {
 
         # redirect server error pages to the static page /50x.html
         #
-        error_page   500 502 503 504  /50x.html;
-        location = /50x.html {
-            root   html;
-        }
+    #    error_page   500 502 503 504  /50x.html;
+    #    location = /50x.html {
+    #        root   html;
+    #    }
 
         # proxy the PHP scripts to Apache listening on 127.0.0.1:80
         #
@@ -82,7 +93,7 @@ http {
         #location ~ /\.ht {
         #    deny  all;
         #}
-    }
+    #}
 
 
     # another virtual host using mix of IP-, name-, and port-based configuration

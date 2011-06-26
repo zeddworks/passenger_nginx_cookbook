@@ -63,7 +63,7 @@ template "/etc/nginx/nginx.conf" do
   variables ({
     :ruby_string => passenger["ruby_string"],
     :passenger_version => passenger["passenger_version"],
-    :server_name => passenger["server_name"],
+    :servers => passenger["servers"],
     :path_to_public => passenger["path_to_public"]
   })
   notifies :restart, "service[nginx]"
