@@ -46,10 +46,10 @@ cookbook_file "/etc/init.d/nginx" do
 end
 
 user "nginx" do
-  home "/opt/nginx"
+  home "/srv/rails"
   comment "nginx"
   system true
-  shell "/bin/false"
+  shell "/bin/bash"
 end
 
 group "nginx" do
