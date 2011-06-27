@@ -56,6 +56,12 @@ group "nginx" do
   members ['nginx']
 end
 
+directory "/srv/rails" do
+  owner "nginx"
+  group "nginx"
+  mode "0755"
+end
+
 passenger = Chef::EncryptedDataBagItem.load("apps", "passenger")
 
 template "/etc/nginx/nginx.conf" do
