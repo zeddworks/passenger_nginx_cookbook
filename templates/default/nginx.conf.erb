@@ -25,8 +25,12 @@ http {
 
     #access_log  logs/access.log  main;
 
-    passenger_root /usr/local/rvm/gems/<%=@ruby_string%>/gems/passenger-<%=@passenger_version%>;
-    passenger_ruby /usr/local/rvm/wrappers/<%=@ruby_string%>/ruby;
+    <% require 'rubygems' %>
+    <% require 'open3' %>
+    <% require 'rvm' %>
+
+    passenger_root <%=Open3.popen3("passenger-config --root")[1].read.chomp%>;
+    passenger_ruby <%="#{RVM::Environment.default_rvm_path}/wrappers/#{RVM::Environment.current_environment_id}/ruby"%>;
 
     sendfile        on;
     #tcp_nopush     on;

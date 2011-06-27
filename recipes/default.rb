@@ -61,10 +61,7 @@ passenger = Chef::EncryptedDataBagItem.load("apps", "passenger")
 template "/etc/nginx/nginx.conf" do
   source "nginx.conf.erb"
   variables ({
-    :ruby_string => passenger["ruby_string"],
-    :passenger_version => passenger["passenger_version"],
     :servers => passenger["servers"],
-    :path_to_public => passenger["path_to_public"]
   })
   notifies :restart, "service[nginx]"
 end
