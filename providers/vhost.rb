@@ -4,6 +4,6 @@ action :create do
     variables({
       :server_name => new_resource.server_name
     })
-    notifies :reload, resources(:service => "nginx"), :immediately
+    notifies :reload, resources(:service => "nginx"), :delayed
   end
 end
