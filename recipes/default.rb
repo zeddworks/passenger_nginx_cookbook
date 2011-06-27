@@ -52,6 +52,11 @@ user "nginx" do
   shell "/bin/bash"
 end
 
+case node['platform']
+when "redhat"
+  ohai "reload_users_groups"
+end
+
 group "nginx" do
   members ['nginx']
 end
