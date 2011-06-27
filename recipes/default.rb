@@ -62,8 +62,6 @@ directory "/srv/rails" do
   mode "0755"
 end
 
-passenger = Chef::EncryptedDataBagItem.load("apps", "passenger")
-
 template "/etc/nginx/nginx.conf" do
   source "nginx.conf.erb"
   notifies :restart, "service[nginx]"
@@ -71,9 +69,9 @@ end
 
 directory "/etc/nginx/vhosts"
 
+passenger_nginx_vhost "localhost"
+
 service "nginx" do
   supports :restart => true, :reload => true, :status => true
   action [ :enable, :start ]
 end
-
-passenger_nginx_vhost "localhost"

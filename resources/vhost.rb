@@ -5,4 +5,4 @@ end
 
 actions :create
 
-attribute :server_name, :required => true, :name_attribute => true, :kind_of => String
+attribute :server_name, :name_attribute => true, :kind_of => String

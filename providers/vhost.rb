@@ -4,10 +4,6 @@ action :create do
     variables({
       :server_name => new_resource.server_name
     })
-    notifies :restart, "service[nginx]"
-  end
-  service "nginx" do
-      supports :restart => true, :reload => true, :status => true
-        action [ :enable, :start ]
+    notifies :reload, resources(:service => "nginx"), :immediately
   end
 end
