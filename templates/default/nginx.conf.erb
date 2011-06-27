@@ -40,18 +40,7 @@ http {
 
     #gzip  on;
 
-    <% @servers.each do |server_name| %>
-    server {
-        listen       80;
-        server_name  <%=server_name%>;
-        root /srv/rails/<%=server_name%>/public;
-        passenger_enabled on;
-        error_page   500 502 503 504  /50x.html;
-        location = /50x.html {
-            root   html;
-        }
-    }
-    <% end %>
+    include vhosts/*.conf;
 
     #server {
     #    listen       80;
