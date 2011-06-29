@@ -35,7 +35,7 @@ end
 gem_package "passenger"
 
 execute "compile-nginx" do
-  command "passenger-install-nginx-module --auto --prefix=/opt/nginx --nginx-source-dir=/tmp/nginx-#{nginx_version} --extra-configure-flags='--conf-path=/etc/nginx/nginx.conf --error-log-path=/var/log/nginx/error.log --http-log-path=/var/log/nginx/access.log --pid-path=/var/run/nginx.pid --lock-path=/var/run/nginx.lock'"
+  command "passenger-install-nginx-module --auto --prefix=/opt/nginx --nginx-source-dir=/tmp/nginx-#{nginx_version} --extra-configure-flags='--conf-path=/etc/nginx/nginx.conf --error-log-path=/var/log/nginx/error.log --http-log-path=/var/log/nginx/access.log --pid-path=/var/run/nginx.pid --lock-path=/var/run/nginx.lock --with-cc-opt='-Wno-error=unused-but-set-variable''"
   not_if "test -f /opt/nginx/sbin/nginx"
 end
 
