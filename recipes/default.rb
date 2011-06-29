@@ -74,8 +74,6 @@ end
 
 directory "/etc/nginx/vhosts"
 
-passenger_nginx_vhost "localhost"
-
 service "nginx" do
   supports :restart => true, :reload => true, :status => true
   action [ :enable, :start ]
