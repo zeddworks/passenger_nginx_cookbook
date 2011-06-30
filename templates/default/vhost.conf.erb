@@ -1,7 +1,7 @@
 server {
     listen       80;
     server_name  <%=@server_name%>;
-    root /srv/rails/<%=@server_name%>/public;
+    root /srv/rails/<%=@server_name%>/current/public;
     passenger_enabled on;
     error_page   500 502 503 504  /50x.html;
     location = /50x.html {
