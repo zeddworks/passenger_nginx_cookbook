@@ -42,6 +42,16 @@ http {
 
     include vhosts/*.conf;
 
+    server {
+      listen 80 default;
+      server_name _;
+      server_name_in_redirect off;
+      if ($host ~* ^([a-z]+\.)(.+)) {
+        set $rawdomain $2;
+        rewrite ^/(.*)$ http://$rawdomain/$1 permanent;
+      }
+    }
+
     #server {
     #    listen       80;
     #    server_name  localhost;
