@@ -39,10 +39,20 @@ execute "compile-nginx" do
   not_if "test -f /opt/nginx/sbin/nginx"
 end
 
-cookbook_file "/etc/init.d/nginx" do
-  source "nginx-common.init.d"
-  mode "0755"
-  action :create_if_missing
+if platform? ("ubuntu", "debian")
+  cookbook_file "/etc/init.d/nginx" do
+    source "nginx-common.init.d"
+    mode "0755"
+    action :create_if_missing
+  end
+end
+
+if platform? "redhat"
+  cookbook_file "/etc/init.d/nginx" do
+    source "RedHatNginxInitScript"
+    mode "0755"
+    action :create_if_missing
+  end
 end
 
 user "nginx" do
