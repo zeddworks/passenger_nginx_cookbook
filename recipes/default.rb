@@ -55,6 +55,14 @@ if platform? "redhat"
   end
 end
 
+cookbook_file "/etc/nginx/common.crt" do
+  source "common.crt"
+end
+
+cookbook_file "/etc/nginx/common.key" do
+  source "common.key"
+end
+
 user "nginx" do
   home "/srv/rails"
   comment "nginx"

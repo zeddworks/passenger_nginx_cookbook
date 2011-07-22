@@ -25,6 +25,9 @@ http {
 
     #access_log  logs/access.log  main;
 
+    ssl_certificate common.crt;
+    ssl_certificate_key common.key;
+
     <% require 'rubygems' %>
     <% require 'open3' %>
     <% require 'rvm' %>

@@ -1,5 +1,5 @@
 server {
-    listen       80;
+    listen       <%=@listen_string%>;
     server_name  <%=@server_name%>;
     root /srv/rails/<%=@server_name%>/current/public;
     passenger_enabled on;
