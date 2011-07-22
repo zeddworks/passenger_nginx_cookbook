@@ -39,7 +39,7 @@ execute "compile-nginx" do
   not_if "test -f /opt/nginx/sbin/nginx"
 end
 
-if platform? ("ubuntu", "debian")
+if platform? "ubuntu", "debian"
   cookbook_file "/etc/init.d/nginx" do
     source "nginx-common.init.d"
     mode "0755"
