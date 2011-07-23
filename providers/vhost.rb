@@ -1,16 +1,26 @@
 action :create do
   server_name = new_resource.server_name
-  listen_string = new_resource.listen_string
-  if listen_string.nil?
-    listen_string = "80"
+  port = new_resource.port
+  ssl = new_resource.ssl
+
+
+  if ssl == true
+    port = 443 if port.nil?
+    vhostname = "/etc/nginx/vhosts/#{server_name}-ssl.conf"
+  else
+    port = 80 if port.nil?
+    vhostname = "/etc/nginx/vhosts/#{server_name}.conf"
   end
-  template "/etc/nginx/vhosts/#{server_name}.conf" do
+
+  template vhostname do
     source "vhost.conf.erb"
     cookbook "passenger_nginx"
     variables({
       :server_name => server_name,
-      :listen_string => listen_string
+      :port => port,
+      :ssl => ssl
     })
     notifies :reload, resources(:service => "nginx"), :delayed
   end
+
 end

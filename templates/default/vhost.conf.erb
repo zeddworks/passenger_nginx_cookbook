@@ -1,5 +1,6 @@
 server {
-    listen       <%=@listen_string%>;
+    listen       <%=@port%>;
+    ssl          <%= @ssl == true ? "on" : "off" %>;
     server_name  <%=@server_name%>;
     root /srv/rails/<%=@server_name%>/current/public;
     passenger_enabled on;
