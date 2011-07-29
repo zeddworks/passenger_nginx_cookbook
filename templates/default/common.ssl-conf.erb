@@ -1,0 +1,12 @@
+[ req ]
+distinguished_name = req_distinguished_name
+prompt = no
+
+[ req_distinguished_name ]
+C = <%= @ssl_country_name %>
+ST = <%= @ssl_state_name %>
+L = <%= @ssl_locality_name %>
+O = <%= @ssl_company_name %>
+OU = <%= @ssl_organizational_unit_name %>
+CN = <%= @ssl_fqdn %>
+emailAddress = <%= @ssl_email_address %>

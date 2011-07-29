@@ -57,24 +57,40 @@ end
 
 nginx = Chef::EncryptedDataBagItem.load("env", "nginx")
 
+
+template "/etc/nginx/common.ssl-conf" do
+  source "common.ssl-conf.erb"
+  variables({
+    :ssl_country_name => nginx["ssl_country_name"],
+    :ssl_state_name => nginx["ssl_state_name"],
+    :ssl_locality_name => nginx["ssl_locality_name"],
+    :ssl_company_name => nginx["ssl_company_name"],
+    :ssl_organizational_unit_name => nginx["ssl_organizational_unit_name"],
+    :ssl_fqdn => nginx["ssl_fqdn"],
+    :ssl_email_address => nginx["ssl_email_address"]
+  })
+end
+
 script "create_certs" do
   interpreter "bash"
   cwd "/etc/nginx"
   code <<-EOH
-    openssl genrsa -out server.key 1024
-    echo "#{nginx["ssl_locality_name"]}" > bob.txt
-    #openssl req -new -key server.key -out server.csr
+    openssl genrsa -out common.key 2048
+    chmod 644 common.key
+    openssl req -config /etc/nginx/common.ssl-conf -new -x509 -nodes -sha1 -days 3650 -key common.key > common.crt
+    openssl x509 -noout -fingerprint -text < common.crt > common.info
+    cat common.crt common.key > common.pem
+    chmod 644 common.pem
   EOH
 end
 
+#cookbook_file "/etc/nginx/common.crt" do
+#  source "common.crt"
+#end
 
-cookbook_file "/etc/nginx/common.crt" do
-  source "common.crt"
-end
-
-cookbook_file "/etc/nginx/common.key" do
-  source "common.key"
-end
+#cookbook_file "/etc/nginx/common.key" do
+#  source "common.key"
+#end
 
 user "nginx" do
   home "/srv/rails"
