@@ -55,6 +55,19 @@ if platform? "redhat"
   end
 end
 
+nginx = Chef::EncryptedDataBagItem.load("env", "nginx")
+
+script "create_certs" do
+  interpreter "bash"
+  cwd "/etc/nginx"
+  code <<-EOH
+    openssl genrsa -out server.key 1024
+    echo "#{nginx["ssl_locality_name"]}" > bob.txt
+    #openssl req -new -key server.key -out server.csr
+  EOH
+end
+
+
 cookbook_file "/etc/nginx/common.crt" do
   source "common.crt"
 end
