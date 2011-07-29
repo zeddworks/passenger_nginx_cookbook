@@ -79,11 +79,7 @@ group "nginx" do
   members ['nginx']
 end
 
-directory "/srv/rails" do
-  owner "nginx"
-  group "nginx"
-  mode "0755"
-end
+directory "/srv/rails"
 
 template "/etc/nginx/nginx.conf" do
   source "nginx.conf.erb"
