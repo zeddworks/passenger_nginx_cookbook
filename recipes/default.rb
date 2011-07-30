@@ -17,7 +17,7 @@
 # limitations under the License.
 #
 
-nginx_version="1.0.4"
+nginx_version="1.0.5"
 
 remote_file "/tmp/nginx-#{nginx_version}.tar.gz" do
   source "http://nginx.org/download/nginx-#{nginx_version}.tar.gz"
