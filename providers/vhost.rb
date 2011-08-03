@@ -2,6 +2,7 @@ action :create do
   server_name = new_resource.server_name
   port = new_resource.port
   ssl = new_resource.ssl
+  internal_locations = new_resource.internal_locations
 
 
   if ssl == true
@@ -18,7 +19,8 @@ action :create do
     variables({
       :server_name => server_name,
       :port => port,
-      :ssl => ssl
+      :ssl => ssl,
+      :internal_locations => internal_locations
     })
     notifies :reload, resources(:service => "nginx"), :delayed
   end

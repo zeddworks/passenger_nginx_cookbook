@@ -1,11 +1,14 @@
 server {
-    listen       <%=@port%>;
+    listen       <%= @port %>;
     ssl          <%= @ssl == true ? "on" : "off" %>;
-    server_name  <%=@server_name%>;
-    root /srv/rails/<%=@server_name%>/current/public;
+    server_name  <%= @server_name %>;
+    root /srv/rails/<%= @server_name %>/current/public;
     passenger_enabled on;
     error_page   500 502 503 504  /50x.html;
     location = /50x.html {
         root   html;
     }
+    <% @internal_locations.each do |internal| %>
+    location <%= internal[0] %> { root <%= internal[1] %>; internal; }
+    <% end %>
 }
