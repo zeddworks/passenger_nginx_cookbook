@@ -17,6 +17,9 @@
 # limitations under the License.
 #
 
+include_recipe "rvm"
+include_recipe "rvm::gem_package"
+
 nginx_version="1.0.5"
 
 remote_file "/tmp/nginx-#{nginx_version}.tar.gz" do
@@ -32,7 +35,9 @@ execute "extract-nginx" do
   only_if "test -f /tmp/nginx-#{nginx_version}.tar.gz"
 end
 
-gem_package "passenger"
+rvm_gem "passenger" do
+  ruby_string node['rvm']['default_ruby']
+end
 
 execute "compile-nginx" do
   command "passenger-install-nginx-module --auto --prefix=/opt/nginx --nginx-source-dir=/tmp/nginx-#{nginx_version} --extra-configure-flags='--conf-path=/etc/nginx/nginx.conf --error-log-path=/var/log/nginx/error.log --http-log-path=/var/log/nginx/access.log --pid-path=/var/run/nginx.pid --lock-path=/var/run/nginx.lock'"
