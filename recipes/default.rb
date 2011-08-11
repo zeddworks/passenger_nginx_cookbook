@@ -55,7 +55,7 @@ if platform? "redhat"
   end
 end
 
-nginx = Chef::EncryptedDataBagItem.load("env", "#{node[:brand]}_nginx")
+nginx = Chef::EncryptedDataBagItem.load("apps", "#{node[:brand]}_nginx")
 
 template "/etc/nginx/common.ssl-conf" do
   source "common.ssl-conf.erb"
